@@ -55,7 +55,7 @@ module "security_groups" {
   security_groups = var.security_groups
 }
 
-resource "aws_instance" "cloud_2021_instance" {
+resource "aws_instance" "my_cloud_2021_instance" {
   ami           = "ami-0230bd60aa48260c6"
   instance_type = "t2.micro"
   key_name      = aws_key_pair.cloud_2021.key_name
@@ -69,7 +69,7 @@ resource "aws_instance" "cloud_2021_instance" {
               sudo yum install -y httpd
               sudo systemctl start httpd.service
               sudo systemctl enable httpd.service
-              sudo echo "<h1> Cloud 2021 At $(hostname -f) </h1>" > /var/www/html/index.html                   
+              sudo echo "<h1> Exercise from Nov 20 </h1>" > /var/www/html/index.html                   
               EOF 
 
   tags = {
@@ -78,6 +78,10 @@ resource "aws_instance" "cloud_2021_instance" {
 }
 
 resource "aws_eip" "cloud_2021_eip" {
-  instance = aws_instance.cloud_2021_instance.id
+  instance = aws_instance.my_cloud_2021_instance.id
   domain   = "vpc"
+}
+
+output "my_eip" {
+  value = aws_eip.cloud_2021_eip.public_ip
 }
